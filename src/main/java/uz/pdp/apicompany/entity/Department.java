@@ -18,6 +18,6 @@ public class Department {
 
     private String name;
 
-    @OneToOne
+    @ManyToOne
     private Company company;
 }

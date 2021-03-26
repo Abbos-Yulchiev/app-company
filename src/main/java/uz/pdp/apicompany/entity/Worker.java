@@ -21,7 +21,7 @@ public class Worker {
 
     private String phoneNumber;
 
-    @OneToOne
+    @ManyToOne
     private Department department;
 
     @OneToOne

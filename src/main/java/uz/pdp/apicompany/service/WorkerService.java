@@ -48,18 +48,19 @@ public class WorkerService {
 
     public Result addWorker(WorkerDTO workerDTO) {
 
-        Optional<Address> optionalAddress = addressRepository.findById(workerDTO.getAddressId());
-        if (!optionalAddress.isPresent())
-            return new Result("Invalid Address Id", false);
-
         Optional<Department> optionalDepartment = departmentRepository.findById(workerDTO.getDepartmentId());
         if (!optionalDepartment.isPresent())
             return new Result("Invalid Department Id", false);
 
+        Address address = new Address();
+        address.setStreet(workerDTO.getAddress().getStreet());
+        address.setHomeNumber(workerDTO.getAddress().getHomeNumber());
+        Address saveAddress = addressRepository.save(address);
+
         Worker worker = new Worker();
         worker.setName(workerDTO.getName());
         worker.setPhoneNumber(workerDTO.getPhoneNumber());
-        worker.setAddress(optionalAddress.get());
+        worker.setAddress(saveAddress);
         worker.setDepartment(optionalDepartment.get());
         workerRepository.save(worker);
         return new Result("New Worker successfully added", true);
@@ -71,16 +72,17 @@ public class WorkerService {
         if (!optionalWorker.isPresent())
             return new Result("Invalid Worker id", false);
 
-        Optional<Address> optionalAddress = addressRepository.findById(workerDTO.getAddressId());
-        if (!optionalAddress.isPresent())
-            return new Result("Invalid Address Id", false);
-
         Optional<Department> optionalDepartment = departmentRepository.findById(workerDTO.getDepartmentId());
         if (!optionalDepartment.isPresent())
             return new Result("Invalid Department Id", false);
 
+        Address address = new Address();
+        address.setStreet(workerDTO.getAddress().getStreet());
+        address.setHomeNumber(workerDTO.getAddress().getHomeNumber());
+        Address saveAddress = addressRepository.save(address);
+
         Worker worker = optionalWorker.get();
-        worker.setAddress(optionalAddress.get());
+        worker.setAddress(saveAddress);
         worker.setDepartment(optionalDepartment.get());
         worker.setName(workerDTO.getName());
         worker.setPhoneNumber(worker.getPhoneNumber());

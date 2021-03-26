@@ -42,13 +42,12 @@ public class CompanyService {
         if (existsByCorpName)
             return new Result("CorpName already exist chose another name", false);
 
-        Address address = new Address();
-        address.setHomeNumber(companyDTO.getAddress().getHomeNumber());
-        address.setStreet(companyDTO.getAddress().getStreet());
-        Address savedAddress = addressRepository.save(address);
+        Optional<Address> optionalAddress = addressRepository.findById(companyDTO.getAddressId());
+        if (!optionalAddress.isPresent())
+            return new Result("Invalid Address Id", false);
 
         Company company = new Company();
-        company.setAddress(savedAddress);
+        company.setAddress(optionalAddress.get());
         company.setCorpName(companyDTO.getCorpName());
         company.setDirectorName(companyDTO.getDirectorName());
         companyRepository.save(company);
@@ -59,17 +58,16 @@ public class CompanyService {
 
         Optional<Company> optionalCompany = companyRepository.findById(companyId);
         if (!optionalCompany.isPresent())
-            return new Result("Invalid Copmany Id", false);
+            return new Result("Invalid Company Id", false);
 
-        Address address = new Address();
-        address.setHomeNumber(companyDTO.getAddress().getHomeNumber());
-        address.setStreet(companyDTO.getAddress().getStreet());
-        Address savedAddress = addressRepository.save(address);
+        Optional<Address> optionalAddress = addressRepository.findById(companyDTO.getAddressId());
+        if (!optionalAddress.isPresent())
+            return new Result("Invalid Address Id", false);
 
         Company company = optionalCompany.get();
         company.setDirectorName(companyDTO.getDirectorName());
         company.setCorpName(companyDTO.getCorpName());
-        company.setAddress(savedAddress);
+        company.setAddress(optionalAddress.get());
         companyRepository.save(company);
         return new Result("Company successfully edited.", true);
     }

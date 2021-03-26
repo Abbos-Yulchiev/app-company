@@ -81,3 +81,14 @@ public class CompanyController {
         return errors;
     }
 }
+
+/*
+  worker post da address findById orqali emas yangi address chib birga save qilinadi
+file
+company put da address yangi emas findById orqali olib kelinadi
+file
+ company many to one ulanadi, bitta korxonada ko'plab bo'limlar mavjud bo'ladi
+file
+department many to one bo'ladi, bitta bo'limda ko'plab hodimlar ishlaydi
+file
+* */

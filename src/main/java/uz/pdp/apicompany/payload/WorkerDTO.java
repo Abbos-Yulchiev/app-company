@@ -25,5 +25,5 @@ public class WorkerDTO {
     private Integer departmentId;
 
     @NotNull(message = "Worker's Address should be filled!")
-    private Integer addressId;
+    private Address address;
 }
