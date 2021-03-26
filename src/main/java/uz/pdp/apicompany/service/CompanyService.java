@@ -42,12 +42,13 @@ public class CompanyService {
         if (existsByCorpName)
             return new Result("CorpName already exist chose another name", false);
 
-        Optional<Address> optionalAddress = addressRepository.findById(companyDTO.getAddressId());
-        if (!optionalAddress.isPresent())
-            return new Result("Invalid Address Id", false);
+        Address address = new Address();
+        address.setHomeNumber(companyDTO.getAddress().getHomeNumber());
+        address.setStreet(companyDTO.getAddress().getStreet());
+        addressRepository.save(address);
 
         Company company = new Company();
-        company.setAddress(optionalAddress.get());
+        company.setAddress(address);
         company.setCorpName(companyDTO.getCorpName());
         company.setDirectorName(companyDTO.getDirectorName());
         companyRepository.save(company);
@@ -60,14 +61,15 @@ public class CompanyService {
         if (!optionalCompany.isPresent())
             return new Result("Invalid Company Id", false);
 
-        Optional<Address> optionalAddress = addressRepository.findById(companyDTO.getAddressId());
-        if (!optionalAddress.isPresent())
-            return new Result("Invalid Address Id", false);
+        Address address = new Address();
+        address.setHomeNumber(companyDTO.getAddress().getHomeNumber());
+        address.setStreet(companyDTO.getAddress().getStreet());
+        addressRepository.save(address);
 
         Company company = optionalCompany.get();
         company.setDirectorName(companyDTO.getDirectorName());
         company.setCorpName(companyDTO.getCorpName());
-        company.setAddress(optionalAddress.get());
+        company.setAddress(address);
         companyRepository.save(company);
         return new Result("Company successfully edited.", true);
     }
