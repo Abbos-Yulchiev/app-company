@@ -52,15 +52,14 @@ public class WorkerService {
         if (!optionalDepartment.isPresent())
             return new Result("Invalid Department Id", false);
 
-        Address address = new Address();
-        address.setStreet(workerDTO.getAddress().getStreet());
-        address.setHomeNumber(workerDTO.getAddress().getHomeNumber());
-        Address saveAddress = addressRepository.save(address);
+        Optional<Address> optionalAddress = addressRepository.findById(workerDTO.getAddressId());
+        if (!optionalAddress.isPresent())
+            return new Result("Invalid Address Id!", false);
 
         Worker worker = new Worker();
         worker.setName(workerDTO.getName());
         worker.setPhoneNumber(workerDTO.getPhoneNumber());
-        worker.setAddress(saveAddress);
+        worker.setAddress(optionalAddress.get());
         worker.setDepartment(optionalDepartment.get());
         workerRepository.save(worker);
         return new Result("New Worker successfully added", true);
@@ -76,13 +75,12 @@ public class WorkerService {
         if (!optionalDepartment.isPresent())
             return new Result("Invalid Department Id", false);
 
-        Address address = new Address();
-        address.setStreet(workerDTO.getAddress().getStreet());
-        address.setHomeNumber(workerDTO.getAddress().getHomeNumber());
-        Address saveAddress = addressRepository.save(address);
+        Optional<Address> optionalAddress = addressRepository.findById(workerDTO.getAddressId());
+        if (!optionalAddress.isPresent())
+            return new Result("Invalid Address Id", false);
 
         Worker worker = optionalWorker.get();
-        worker.setAddress(saveAddress);
+        worker.setAddress(optionalAddress.get());
         worker.setDepartment(optionalDepartment.get());
         worker.setName(workerDTO.getName());
         worker.setPhoneNumber(worker.getPhoneNumber());

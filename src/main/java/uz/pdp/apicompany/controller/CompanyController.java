@@ -46,9 +46,9 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<Result> addCompany(@Valid @RequestBody CompanyDTO companyDTO) {
+    public ResponseEntity<Result> addCompany(Company company) {
 
-        Result result = companyService.addCompany(companyDTO);
+        Result result = companyService.addCompany(company);
         if (result.getSuccess())
             return ResponseEntity.status(201).body(result);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(result);

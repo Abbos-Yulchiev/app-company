@@ -36,21 +36,21 @@ public class CompanyService {
         return optionalCompany.orElse(null);
     }
 
-    public Result addCompany(CompanyDTO companyDTO) {
+    public Result addCompany(Company company) {
 
-        boolean existsByCorpName = companyRepository.existsByCorpName(companyDTO.getCorpName());
+        boolean existsByCorpName = companyRepository.existsByCorpName(company.getCorpName());
         if (existsByCorpName)
             return new Result("CorpName already exist chose another name", false);
 
         Address address = new Address();
-        address.setHomeNumber(companyDTO.getAddress().getHomeNumber());
-        address.setStreet(companyDTO.getAddress().getStreet());
+        address.setHomeNumber(company.getAddress().getHomeNumber());
+        address.setStreet(company.getAddress().getStreet());
         addressRepository.save(address);
 
-        Company company = new Company();
-        company.setAddress(address);
-        company.setCorpName(companyDTO.getCorpName());
-        company.setDirectorName(companyDTO.getDirectorName());
+        Company newCompany = new Company();
+        newCompany.setAddress(address);
+        newCompany.setCorpName(company.getCorpName());
+        newCompany.setDirectorName(company.getDirectorName());
         companyRepository.save(company);
         return new Result("New Company Successfully saved.", true);
     }
@@ -61,15 +61,14 @@ public class CompanyService {
         if (!optionalCompany.isPresent())
             return new Result("Invalid Company Id", false);
 
-        Address address = new Address();
-        address.setHomeNumber(companyDTO.getAddress().getHomeNumber());
-        address.setStreet(companyDTO.getAddress().getStreet());
-        addressRepository.save(address);
+        Optional<Address> optionalAddress = addressRepository.findById(companyDTO.getAddressId());
+        if (!optionalAddress.isPresent())
+            return new Result("Invalid address Id", false);
 
         Company company = optionalCompany.get();
         company.setDirectorName(companyDTO.getDirectorName());
         company.setCorpName(companyDTO.getCorpName());
-        company.setAddress(address);
+        company.setAddress(optionalAddress.get());
         companyRepository.save(company);
         return new Result("Company successfully edited.", true);
     }

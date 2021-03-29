@@ -22,5 +22,5 @@ public class CompanyDTO {
     private String directorName;
 
     @NotNull(message = "Address field should be filled")
-    private Address address;
+    private Integer addressId;
 }
